@@ -22,6 +22,9 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
+
         services.Configure<AuthTokenSettings>(Configuration.GetSection(nameof(AuthTokenSettings)));
         services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
         services.Configure<PlayFabSettings>(Configuration.GetSection(nameof(PlayFabSettings)));
@@ -69,6 +72,7 @@ public class Startup
 
         // app.UseHttpsRedirection();
         app.UseSerilogRequestLogging();
+        app.UseExceptionHandler();
         app.UseMiddleware<RequestLoggerMiddleware>();
         app.UseRouting();
         app.UseAuthentication();
